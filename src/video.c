@@ -1413,7 +1413,7 @@ video_update()
 					sdcard_detach();
 					consumed = true;
 				} else if (event.key.keysym.sym == SDLK_x) {
-					printf("CTRL+X shutdown.\n");
+					printf("CTRL+x shutdown.\n");
 					emu_exit();
 #ifndef __EMSCRIPTEN__
 				} else if (event.key.keysym.sym == SDLK_p) {
