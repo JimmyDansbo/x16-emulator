@@ -1316,6 +1316,14 @@ void main_shutdown() {
 
 }
 
+void emu_exit() {
+	main_shutdown();
+#ifdef __EMSCRIPTEN__
+	emscripten_force_exit(0);
+#endif
+	exit(0);
+}
+
 bool
 set_kernal_status(uint8_t s)
 {

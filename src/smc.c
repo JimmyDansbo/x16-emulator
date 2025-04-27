@@ -134,11 +134,7 @@ smc_write() {
 		case 1:
 			if (i2c_data[1] == 0) {
 				printf("SMC Power Off.\n");
-				main_shutdown();
-#ifdef __EMSCRIPTEN__
-				emscripten_force_exit(0);
-#endif
-				exit(0);
+				emu_exit();
 			} else if (i2c_data[1] == 1) {
 				smc_requested_reset = true;
 			}

@@ -90,6 +90,8 @@ static bool is_fullscreen = false;
 bool mouse_grabbed = false;
 bool no_keyboard_capture = false;
 bool kernal_mouse_enabled = false;
+bool select_down = false;
+bool start_down = false;
 
 static uint8_t video_ram[0x20000];
 static uint8_t palette[256 * 2];
@@ -1410,6 +1412,9 @@ video_update()
 				} else if (event.key.keysym.sym == SDLK_d) {
 					sdcard_detach();
 					consumed = true;
+				} else if (event.key.keysym.sym == SDLK_x) {
+					printf("CTRL+X shutdown.\n");
+					emu_exit();
 #ifndef __EMSCRIPTEN__
 				} else if (event.key.keysym.sym == SDLK_p) {
 					screenshot();
@@ -1494,10 +1499,26 @@ video_update()
 		    joystick_remove(event.jdevice.which);
 	    }
 	    if (event.type == SDL_CONTROLLERBUTTONDOWN) {
+		    if (event.cbutton.button == 4) { //select
+			select_down = true;
+		    } else
+		    if (event.cbutton.button == 6) { //start
+			start_down = true;
+		    }
+		    if (select_down && start_down) {
+			printf("SELECT + START shutdown.\n");
+			emu_exit();
+		}
 		    joystick_button_down(event.cbutton.which, event.cbutton.button);
 	    }
 		if (event.type == SDL_CONTROLLERBUTTONUP) {
-		    joystick_button_up(event.cbutton.which, event.cbutton.button);
+			if (event.cbutton.button == 4) { //select
+				select_down = false;
+			    } else
+			    if (event.cbutton.button == 6) { //start
+				start_down = false;
+			    }
+			    joystick_button_up(event.cbutton.which, event.cbutton.button);
 	    }
 
 	}
