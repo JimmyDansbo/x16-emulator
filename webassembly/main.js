@@ -61,13 +61,6 @@ const layouts = [
 
 lang = getFirstBrowserLanguage().toLowerCase().trim();
 
-if (layouts.includes(lang)) {
-    logOutput('Using keyboard map: ' + lang);
-} else {
-    logOutput('Language (' + lang + ') not found in keymaps so using keyboard map: en-us');
-    lang = 'en-us';
-}
-
 var url = new URL(window.location.href);
 var manifest_link = url.searchParams.get("manifest");
 var ram_val = url.searchParams.get("ram");
@@ -88,6 +81,13 @@ var gen1 = true;
 
 if (lang_val) {
     lang = lang_val;
+}
+
+if (layouts.includes(lang)) {
+    logOutput('Using keyboard map: ' + lang);
+} else {
+    logOutput('Language (' + lang + ') not found in keymaps so using keyboard map: en-us');
+    lang = 'en-us';
 }
 
 var emuArguments = ['-keymap', lang, '-rtc'];
